@@ -11,11 +11,16 @@ namespace WebApplicationDemo.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class EmployeesFull
     {
         public int ID { get; set; }
+
+        //[Display(Name = "Employee Name")]
         public string FullName { get; set; }
+
+        //[Display(Name = "Joining Date")]
         public Nullable<System.DateTime> JoiningDate { get; set; }
     }
 }

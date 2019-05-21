@@ -1,81 +1,142 @@
-﻿
-@model IEnumerable<WebApplicationDemo.Models.EmployeesFull>
+﻿@model IEnumerable<WebApplicationDemo.Models.EmployeesFull>
 
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="/resources/demos/style.css">
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+@{
+    Layout = null;
+}
 
+<!DOCTYPE html>
 
+<html>
+<head>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-<h2>AutoComplete example</h2>
-
-<script type="text/javascript">
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script type="text/javascript">
     $(function () {
         $("#txtSearch").autocomplete({
             source: '@Url.Action("Autocomplete","Home")',
             minLength: 1
         });
     });
-</script>
-<script type="text/javascript">
-    var data1;
-    $(function () {
-        data1 = $("#startDate").datepicker();
-        console.log(typeof(data1));
-        return data1;
-    });
+    </script>
+    <script type="text/javascript">
 
-    $(function () {
-        $("#btn2").click(function () {
-            alert(data1);
-            SelectDate(data1)
+        $(function () {
+            $("#startDate").datepicker();
         });
-    });
-</script>
-<div style="font-family:Arial">
-    @using (Html.BeginForm())
-    {
-        <b>Name: </b>
-
-        @Html.TextBox("searchTerm", null, new { id = "txtSearch" })
-
-        <input type="submit" value="Search" id="btn1"/>
 
 
-    }
+        $(function () {
+            $("#btn2").click(function () {
 
-    <table border="1">
+                var date = document.getElementById("startDate").value;
+
+                alert(date);
+
+                '@Url.Action("SelectDate").';
+
+            });
+        });
 
 
-       @foreach (var item in Model)
+        $(function () {
+            $("#btn1").click(function () {
+
+                var date = document.getElementById("startDate").value;  
+                
+            });
+        });
+    </script>
+    
+
+</head>
+<body>
+
+
+    <form asp-controller="HomeController" asp-action="SelectDate" method="get">
+        <p>
+            Title: <input type="text" name="SearchString">
+            <input type="submit" value="MyAction" />
+        </p>
+    </form>
+
+
+
+
+    <div style="font-family:Arial">
+
+        <p>
+            <h1 style="font-size:20px">AutoComplete example</h1>
+        </p>
+
+        @using (Html.BeginForm())
         {
-           <tr>
-              <td>
-                @Html.DisplayFor(modelItem => item.FullName)
-              </td>            
-           </tr>
+            <b>Name: </b>
+
+            @Html.TextBox("searchTerm", null, new { id = "txtSearch" })
+
+            <input type="submit" value="Search" id="btn1" />
+        }
+        <script>
+        $(function () {
+        $("#txtSearch").autocomplete({
+        source: '@Url.Action("Autocomplete", "Home")',
+        minLength: 1
+        });
+        });
+        </script>
+
+        <table border="1">
+
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FullName)
+                    </td>
+                </tr>
+
+            }
+
+        </table>
+    </div>
+
+    <div style="font-family:Arial">
+
+        <p>
+            <h2 style="font-size:20px" >Filter By Date example</h2>
+        </p>
+
+        @using (Html.BeginForm())
+        {
+            <b>Start Date: </b>
+
+            @Html.TextBox("startDate", null, new { id = "startDate" })
+
+            <input type="submit" Text="SelectDate" value="SelectDate" id="btn2" />
+
 
         }
 
-    </table>
-</div>
-<div style="font-family:Arial">
-    @using (Html.BeginForm())
-    {
-        <b>Start Date: </b>
-
-        @Html.TextBox("startDate", null, new { id = "startDate" })
-
-        <input type="submit" Text="SelectDate" value="SelectDate" id="btn2" />
-
-
-    }
     <table border="1">
 
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.JoiningDate)
+            </th>
+        </tr>
 
         @foreach (var item in Model)
-        {
+         {
+
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.FullName)
@@ -84,8 +145,10 @@
                     @Html.DisplayFor(modelItem => item.JoiningDate)
                 </td>
             </tr>
-
-        }
-
+         }
     </table>
-</div>
+    </div>
+
+</body>
+
+</html>
