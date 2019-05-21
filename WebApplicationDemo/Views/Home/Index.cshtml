@@ -27,6 +27,7 @@
 
         $(function () {
             $("#startDate").datepicker();
+            var date = document.getElementById("startDate").value;
         });
 
 
@@ -37,11 +38,28 @@
 
                 alert(date);
 
-                '@Url.Action("SelectDate").';
+                
 
             });
         });
-
+        $(document).ready(function () {
+            $("#btn2").click(function () {
+                var date = document.getElementById("startDate").value;
+                var f = {};
+                f.url = '@Url.Action("FilterOutTableAfterDate", "Home")';
+                f.type = "POST";
+                f.dataType = "json";
+                f.data = JSON.stringify({ date });
+                f.contentType = "application/json";
+                f.success = function (response) {
+                    alert("success");
+                };
+                f.error = function (response) {
+                    alert("failed");
+                };
+                $.ajax(f);
+            });
+        });
 
         $(function () {
             $("#btn1").click(function () {
@@ -56,13 +74,6 @@
 </head>
 <body>
 
-
-    <form asp-controller="HomeController" asp-action="SelectDate" method="get">
-        <p>
-            Title: <input type="text" name="SearchString">
-            <input type="submit" value="MyAction" />
-        </p>
-    </form>
 
 
 
@@ -81,17 +92,9 @@
 
             <input type="submit" value="Search" id="btn1" />
         }
-        <script>
-        $(function () {
-        $("#txtSearch").autocomplete({
-        source: '@Url.Action("Autocomplete", "Home")',
-        minLength: 1
-        });
-        });
-        </script>
+        
 
         <table border="1">
-
 
             @foreach (var item in Model)
             {
@@ -100,16 +103,16 @@
                         @Html.DisplayFor(modelItem => item.FullName)
                     </td>
                 </tr>
-
             }
 
         </table>
+
     </div>
 
     <div style="font-family:Arial">
 
         <p>
-            <h2 style="font-size:20px" >Filter By Date example</h2>
+            <h2 style="font-size:20px">Filter By Date example</h2>
         </p>
 
         @using (Html.BeginForm())
@@ -118,35 +121,56 @@
 
             @Html.TextBox("startDate", null, new { id = "startDate" })
 
-            <input type="submit" Text="SelectDate" value="SelectDate" id="btn2" />
+            <select asp-for="startDate" input type="submit" Text="startDate" value="startDate" id="btn2" />
 
 
+            <p>
+                <select asp-for="SelectDate" asp-action="SelectDate" asp-items="Model.JoiningDate ">
+                    <option value="">All</option>
+                </select>
+
+                Title: <input type="text" asp-action="SelectDate" />
+                <input type="submit" value="Filter" />
+            </p>
+            <form asp-controller="Home" asp-action="SelectDate">
+
+                <label>Comments</label>
+                <input type="text" asp-for="Comments" />
+
+                <label>Lucky Employee</label>
+                <select asp-for="EmployeeId" asp-items="@Model">
+                    <option>Please select one</option>
+                </select>
+
+                <input type="submit" />
+
+            </form>
         }
 
-    <table border="1">
-
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FullName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.JoiningDate)
-            </th>
-        </tr>
-
-        @foreach (var item in Model)
-         {
+        <table border="1">
 
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FullName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.JoiningDate)
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.FullName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.JoiningDate)
+                </th>
             </tr>
-         }
-    </table>
+
+            @foreach (var item in Model)
+            {
+
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.JoiningDate.Value)
+                    </td>
+                </tr>
+            }
+        </table>
     </div>
 
 </body>

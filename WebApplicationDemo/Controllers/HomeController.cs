@@ -11,7 +11,7 @@ namespace WebApplicationDemo.Controllers
 {
     public class HomeController : Controller
     {
-        [HttpGet]
+        
         public async Task<ActionResult> Index()
         {
             DBContextFull db = new DBContextFull();
@@ -30,18 +30,18 @@ namespace WebApplicationDemo.Controllers
 
         [HttpPost]
 
-        public async Task<ActionResult> Index(string id )
+        public async Task<ActionResult> Index(string searchTerm )
         {
             DBContextFull db = new DBContextFull();
 
             List<EmployeesFull> employees;
 
-            if (string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(searchTerm))
             {
                  employees = await db.EmployeesFulls.ToListAsync();             }
             else
             {
-                employees = await db.EmployeesFulls.Where(x => x.FullName.StartsWith(id)).ToListAsync();
+                employees = await db.EmployeesFulls.Where(x => x.FullName.StartsWith(searchTerm)).ToListAsync();
             }
 
 
@@ -102,7 +102,7 @@ namespace WebApplicationDemo.Controllers
             {
                 employees = dbf.EmployeesFulls.ToList();
             }
-            return View(employees);
+            return View("View1", employees);
 
         }
         public JsonResult Autocomplete(string term)
@@ -118,7 +118,24 @@ namespace WebApplicationDemo.Controllers
             return Json(Employees, JsonRequestBehavior.AllowGet);
 
         }
+        public JsonResult FilterOutTableAfterDate(DateTime date)
+        {
+            using (DBContextFull dbf = new DBContextFull())
+            {
+                List<EmployeesFull> employees;
 
+                if (date != null)
+                {
+                    employees = dbf.EmployeesFulls.Where(l => l.JoiningDate <= date).ToList();
+                }
+                else
+                {
+                    employees = dbf.EmployeesFulls.ToList();
+                }
+
+                return Json(employees, JsonRequestBehavior.AllowGet);
+            }
+        }
 
 
 
