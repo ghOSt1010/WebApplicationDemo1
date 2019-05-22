@@ -11,10 +11,11 @@ namespace WebApplicationDemo.Controllers
 {
     public class HomeController : Controller
     {
-        
+        readonly DBContextFull db = new DBContextFull();
+
         public async Task<ActionResult> Index()
         {
-            DBContextFull db = new DBContextFull();
+            //DBContextFull db = new DBContextFull();
 
             return View(await db.EmployeesFulls.ToListAsync());
 
@@ -32,7 +33,7 @@ namespace WebApplicationDemo.Controllers
 
         public async Task<ActionResult> Index(string searchTerm )
         {
-            DBContextFull db = new DBContextFull();
+            //DBContextFull db = new DBContextFull();
 
             List<EmployeesFull> employees;
 
@@ -45,7 +46,7 @@ namespace WebApplicationDemo.Controllers
             }
 
 
-            return View( employees);
+            return View( );
 
         }
         [HttpPost]
@@ -53,17 +54,17 @@ namespace WebApplicationDemo.Controllers
         {
             DateTime startDate = DateTime.ParseExact(valueINeed, "yyyy-MM-dd ,fff",
                                        System.Globalization.CultureInfo.InvariantCulture);
-            DBContextFull dbf = new DBContextFull();
+            //DBContextFull dbf = new DBContextFull();
 
             List<EmployeesFull> employees;
 
             if (startDate != null)
             {
-                employees = dbf.EmployeesFulls.Where(l => l.JoiningDate <= startDate).ToList();
+                employees = db.EmployeesFulls.Where(l => l.JoiningDate <= startDate).ToList();
             }
             else
             {
-                employees = dbf.EmployeesFulls.ToList();
+                employees = db.EmployeesFulls.ToList();
             }
             return View(employees);
         }
@@ -90,17 +91,17 @@ namespace WebApplicationDemo.Controllers
         [HttpPost]
         public ActionResult SelectDate(DateTime startDate)
         {
-            DBContextFull dbf = new DBContextFull();
+            //DBContextFull dbf = new DBContextFull();
 
             List<EmployeesFull> employees;
 
             if (startDate != null)
             {
-                employees = dbf.EmployeesFulls.Where(l => l.JoiningDate <= startDate).ToList();
+                employees = db.EmployeesFulls.Where(l => l.JoiningDate <= startDate).ToList();
             }
             else
             {
-                employees = dbf.EmployeesFulls.ToList();
+                employees = db.EmployeesFulls.ToList();
             }
             return View("View1", employees);
 
@@ -118,23 +119,24 @@ namespace WebApplicationDemo.Controllers
             return Json(Employees, JsonRequestBehavior.AllowGet);
 
         }
+        
         public JsonResult FilterOutTableAfterDate(DateTime date)
         {
-            using (DBContextFull dbf = new DBContextFull())
-            {
+            //using (DBContextFull dbf = new DBContextFull())
+            //{
                 List<EmployeesFull> employees;
 
                 if (date != null)
                 {
-                    employees = dbf.EmployeesFulls.Where(l => l.JoiningDate <= date).ToList();
+                    employees = db.EmployeesFulls.Where(l => l.JoiningDate <= date).ToList();
                 }
                 else
                 {
-                    employees = dbf.EmployeesFulls.ToList();
+                    employees = db.EmployeesFulls.ToList();
                 }
 
                 return Json(employees, JsonRequestBehavior.AllowGet);
-            }
+            //}
         }
 
 

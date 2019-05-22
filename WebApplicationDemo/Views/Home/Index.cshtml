@@ -2,6 +2,7 @@
 
 @{
     Layout = null;
+    ViewBag.Title = "Index";
 }
 
 <!DOCTYPE html>
@@ -30,21 +31,11 @@
             var date = document.getElementById("startDate").value;
         });
 
-
-        $(function () {
-            $("#btn2").click(function () {
-
-                var date = document.getElementById("startDate").value;
-
-                alert(date);
-
-                
-
-            });
-        });
+       
         $(document).ready(function () {
             $("#btn2").click(function () {
                 var date = document.getElementById("startDate").value;
+                alert(date);
                 var f = {};
                 f.url = '@Url.Action("FilterOutTableAfterDate", "Home")';
                 f.type = "POST";
@@ -79,74 +70,6 @@
 
 
     <div style="font-family:Arial">
-
-        <p>
-            <h1 style="font-size:20px">AutoComplete example</h1>
-        </p>
-
-        @using (Html.BeginForm())
-        {
-            <b>Name: </b>
-
-            @Html.TextBox("searchTerm", null, new { id = "txtSearch" })
-
-            <input type="submit" value="Search" id="btn1" />
-        }
-        
-
-        <table border="1">
-
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FullName)
-                    </td>
-                </tr>
-            }
-
-        </table>
-
-    </div>
-
-    <div style="font-family:Arial">
-
-        <p>
-            <h2 style="font-size:20px">Filter By Date example</h2>
-        </p>
-
-        @using (Html.BeginForm())
-        {
-            <b>Start Date: </b>
-
-            @Html.TextBox("startDate", null, new { id = "startDate" })
-
-            <select asp-for="startDate" input type="submit" Text="startDate" value="startDate" id="btn2" />
-
-
-            <p>
-                <select asp-for="SelectDate" asp-action="SelectDate" asp-items="Model.JoiningDate ">
-                    <option value="">All</option>
-                </select>
-
-                Title: <input type="text" asp-action="SelectDate" />
-                <input type="submit" value="Filter" />
-            </p>
-            <form asp-controller="Home" asp-action="SelectDate">
-
-                <label>Comments</label>
-                <input type="text" asp-for="Comments" />
-
-                <label>Lucky Employee</label>
-                <select asp-for="EmployeeId" asp-items="@Model">
-                    <option>Please select one</option>
-                </select>
-
-                <input type="submit" />
-
-            </form>
-        }
-
         <table border="1">
 
             <tr>
@@ -171,6 +94,44 @@
                 </tr>
             }
         </table>
+
+        <p>
+            <h1 style="font-size:20px">AutoComplete example</h1>
+        </p>
+
+        @using (Html.BeginForm())
+        {
+            <b>Name: </b>
+
+            @Html.TextBox("searchTerm", null, new { id = "txtSearch" })
+
+            <input type="submit" value="Search" id="btn1" />
+        }
+
+
+
+
+    </div>
+
+    <div style="font-family:Arial">
+
+        <p>
+            <h2 style="font-size:20px">Filter By Date example</h2>
+        </p>
+
+        @using (Html.BeginForm())
+        {
+            <b>Start Date: </b>
+
+            @Html.TextBox("startDate", null, new { id = "startDate" })
+
+            <select asp-for="startDate" input type="submit" Text="startDate" value="startDate" id="btn2" />
+
+
+            
+        }
+
+        
     </div>
 
 </body>
