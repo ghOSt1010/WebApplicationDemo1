@@ -68,6 +68,32 @@ namespace WebApplicationDemo.Controllers
             }
             return View(employees);
         }
+        
+        //RC review
+        [HttpPost]
+        public ActionResult MyAction(String StartDate, String EndDate)
+        {
+            DateTime startDate = DateTime.ParseExact(StartDate, "yyyy-MM-dd ,fff",
+                                       System.Globalization.CultureInfo.InvariantCulture);
+            DateTime endtDate = DateTime.ParseExact(EndDate, "yyyy-MM-dd ,fff",
+                                       System.Globalization.CultureInfo.InvariantCulture);
+            //DBContextFull dbf = new DBContextFull();
+
+            List<EmployeesFull> employees;
+
+            if (startDate != null)
+            {
+                employees = db.EmployeesFulls.Where("JoiningDate >= startDate & JoiningDate <= endDate").ToList();
+            }
+            else
+            {
+                //empyty cost tam
+                employees = db.EmployeesFulls.ToList();
+            }
+            
+            return View(employees);
+        }
+        
         /*
         [HttpPost]
         public ActionResult Index(DateTime? startDate = null)
